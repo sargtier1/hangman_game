@@ -1,5 +1,4 @@
 //////  ARRAY WITH POSSIBLE WORDS TO GUESS FROM //////
-
 var wordPool = 
   [
     "jacket", 
@@ -34,24 +33,27 @@ var guessLeft = document.getElementById("remaining");
 var wins = 0;
 var maxGuesses = 9;
 
-//Selects random word and creats empty array
+//Selects random word and creats empty array (bonus player guess var)
 var chosenWord = wordPool[Math.floor(Math.random() * wordPool.length)];
 var answer = [];
 
-window.onload = function () {
+// figures out how many characters are in selected word, updates game screen with stats //
+window.onload = function load() {
    
-    // figures out how many characters are in selected word //
+    // figures out how many characters are in selected word, updates game screen with stats //
     for (var i = 0; i < chosenWord.length; i++) {
-        console.log(i);
-        answer.push("_");
-        console.log(answer);
-        console.log(chosenWord); 
+        answer[i] = "_";
+        console.log([i]);
+        console.log(answer)
+        console.log(chosenWord); //test
     }
 
+    var remainingLetters = chosenWord.length
     document.getElementById("playArea").innerHTML = answer.join(" "); //replaces spaces with blanks on web page
     document.getElementById("remaining").innerHTML = maxGuesses; //puts max guesses on screen
     document.getElementById("wins").innerHTML = wins; // puts wins on screen
 
+  };
 
   //Runs everytime a key is pressed\\
 
@@ -59,24 +61,48 @@ document.onkeyup = function whenGuessed (event) {
 
     var playerGuess = (event.key);//figures out whats being pressed
     lettersGuessed.innerHTML += " " + playerGuess; //Players guess displayed
-    guessLeft - 1;//removes guesses remaining by one each guess
-    
-    
-      for (var i = 0; i < chosenWord.length; i++) {//this helps following code reference the hidden word
+    maxGuesses -1;
+    var remainingLetters = chosenWord.length; 
 
-        if (chosenWord[i] === playerGuess) {
-          document.getElementById("playArea").textContent += playerGuess;
-          
-
-          } else if (maxGuesses === 0) {
-            // after 9 presses alerts "you lose!"
-              alert("You Lose");
-              
-          } else {
-            // if all spaces are filled you alert "you win!""
-            wins++;
+      for (var j = 0; j < chosenWord.length; j++) {//this helps following code reference the hidden word
+        
+        if (playerGuess < "a" || playerGuess > "z") {
+          return;
           }
-    }
-  };
+
+        if (chosenWord.charAt[j] === playerGuess) {
+          //change vale of answer[i] to current character
+          answer[j] = playerGuess;
+          remainingLetters - 1;
+          console.log(answer);
+          return;
+          }
+
+        if (chosenWord.charAt[j] !== playerGuess) {
+          // reduce guesses by 1
+          guessLeft = maxGuesses - 1;   
+          return;       
+          }
+
+        if (maxGuesses === 0) {
+          // end game
+            alert("You Lose!");
+            prompt("play Again?")
+            if (true) {
+              // execute load function
+            }
+          } 
+        }
+
+        if (remainingLetters === 0){
+          alert("You Win!")
+          prompt("play Again?") 
+            if (true) {
+              //execute load funtion
+            }
+        }
+        
 };
+  // updating the playingfield
+
 
