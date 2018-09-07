@@ -25,18 +25,24 @@ var wordPool =
                               
 // Variables that hold refernece to HTML
 // var playArea = document.getElementById("playArea");
-var letterGuessed =  document.getElementById("lettersGuessed");
-var playArea= document.getElementById("playArea");
+var letterGuessed = document.getElementById("lettersGuessed");
+var playArea = document.getElementById("playArea");
 var wins = document.getElementById("wins");
 var guessLeft = document.getElementById("remaining");
 
 // Variables that hold of wins loses, and whats being guessed
-var wins = 0;
+var winCount = 0;
 var maxGuesses = 9;
+var GuessRight = false;
+var GuessWrong = false;
+console.log(GuessRight)
 
-//Selects random word and creats empty array
+//Selects random word and creats empty array/ checks remaing lettes
 var chosenWord = wordPool[Math.floor(Math.random() * wordPool.length)];
 var answer = [];
+var remainingLetters;
+
+
 
 window.onload = function () {
    
@@ -48,44 +54,77 @@ window.onload = function () {
         console.log(chosenWord); 
     }
 
+    remainingLetters = chosenWord.length
+    console.log(remainingLetters)
+
+
     document.getElementById("playArea").innerHTML = answer.join(" "); //replaces spaces with blanks on web page
     document.getElementById("remaining").innerHTML = maxGuesses; //puts max guesses on screen
-    document.getElementById("wins").innerHTML = wins; // puts wins on screen
-
+    document.getElementById("wins").innerHTML = winCount; // puts wins on screen
+  };
 
   //Runs everytime a key is pressed\\
 
 document.onkeyup = function whenGuessed (event) {
+    var count = 0;
 
-    var playerGuess = (event.key);//figures out whats being pressed
-    lettersGuessed.innerHTML += " " + playerGuess; //Players guess displayed
-    maxGuesses - 1;//removes guesses remaining by one each guess
-    guessLeft = maxGuesses
-    document.getElementById("remaining").innerHTML = guessLeft;
-    var remainingWords = answer.length // sees how many words are left blank
+
+  // Determines what is being pressed, and then logs that guess in the "letters Guessed" box
+    var playerGuess = (event.key);
+    lettersGuessed.innerHTML += " " + playerGuess;
     
-    
+
+  // creates variable to see how many letters are left in the word.  
+
       for (var i = 0; i < chosenWord.length; i++) {//this helps following code reference the hidden word
-      
+        
         if (chosenWord[i] === playerGuess) {
-          var remainingWords = answer.length
-          answer[i]= playerGuess; // checks if guess is the same as a character 
-          remainingWords -1; // reduce remaining words
-          console.log(answer); // console test
-          console.log(remainingWords);
-          document.getElementById("playArea").innerHTML = answer // displays new array with filled in blank spaces
+          // checks if guess is the same as a character 
+          answer[i]= playerGuess; 
+
+
+          // displays new array with filled in blank spaces
+          document.getElementById("playArea").innerHTML = answer.join(" ")
+          GuessRight = true;
+          count++;
+          }
         }
+
+        console.log('count ' + count);
+
+        if (GuessRight === true) {
+          // reduces index of string by one
+          remainingLetters = remainingLetters - count;
+           // console test
+           console.log(answer); 
+           console.log('remaining ' + remainingLetters);
+
+        } else {
+          // reduces max guess by one
+          maxGuesses --;
+        }
+
+          // updates max guess by one
+          document.getElementById("remaining").innerHTML = maxGuesses;
+ 
+        if (remainingLetters === 0) {
+          winCount++;
+          document.getElementById("wins").textContent = winCount;
+          document.getElementById("gameStatus").innerHTML = "You Win!";
+          maxGuesses = 9;
+          chosenWord = wordPool[Math.floor(Math.random() * wordPool.length)];
+          answer = [];
+          remainingLetters = chosenWord.length
+        }
+
 
         if (maxGuesses === 0) {
-          // after 9 presses alerts "you lose!"
-            alert("You Lose");
+        alert("You Lose!");
+        maxGuesses = 9;
+        chosenWord = wordPool[Math.floor(Math.random() * wordPool.length)];
+        answer = [];
+        remainingLetters = chosenWord.length
         }
-
-        if (remainingWords = 0) {
-          // if all spaces are filled you alert "you win!""
-          wins++;
-        }
-      }
-    
-  };
 };
+ /// point of win/loss reset game for another round, but dont reload stats
+ 
