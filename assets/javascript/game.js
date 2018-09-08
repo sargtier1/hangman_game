@@ -32,29 +32,47 @@ var guessLeft = document.getElementById("remaining");
 
 // Variables that hold of wins loses, and whats being guessed
 var winCount = 0;
-var maxGuesses = 10;
+var maxGuesses = 9;
 var GuessRight = false;
 console.log(GuessRight)
 
 //Selects random word and creats empty array/ checks remaing lettes
-var chosenWord = wordPool[Math.floor(Math.random() * wordPool.length)];
-var answer = [];
+
+
+var chosenWord;
+var wordLetterArray;
+var answer;
 var remainingLetters;
+var empty;
+
+window.onload = function() {
+  gameBegin();
+};
+
+function gameBegin () {
+  chosenWord = wordPool[Math.floor(Math.random() * wordPool.length)];
+  wordLetterArray = [];
+  answer = [];
+  remainingLetters;
+  empty = "";
+  document.getElementById("lettersGuessed").innerHTML = empty;
 
 
-window.onload = function gameBegin () {
-   
+  wordLetterArray = chosenWord.split('');
+
+  console.log('word as array', wordLetterArray);
 // figures out how many characters are in selected word //
+  
+
   for (var i = 0; i < chosenWord.length; i++) {
     console.log(i);
     answer.push("_");
     console.log(answer);
     console.log(chosenWord); 
   }
-
+    
     remainingLetters = chosenWord.length
     console.log(remainingLetters)
-
 
     document.getElementById("playArea").innerHTML = answer.join(" "); //replaces spaces with blanks on web page
     document.getElementById("remaining").innerHTML = maxGuesses; //puts max guesses on screen
@@ -81,6 +99,7 @@ for (var i = 0; i < chosenWord.length; i++) {//this helps following code referen
     document.getElementById("playArea").innerHTML = answer.join(" ")
     GuessRight = true;
     count++;
+    // break;
     }
 }
 
@@ -110,6 +129,7 @@ console.log('count ' + count);
     winCount++;
     document.getElementById("wins").textContent = winCount;
     document.getElementById("gameStatus").innerHTML = "You Win!";
+    gameBegin();
   }
 
   if (maxGuesses === 0) {
@@ -117,17 +137,15 @@ console.log('count ' + count);
   }
 };
 
-function GameReset () {
-  chosenWord = wordPool[Math.floor(Math.random() * wordPool.length)]; // chooses new word
-  answer = []; // new empty array to store new word and push through the blanks
-  var remainingLetters; // new empty var to store data to help solve
-  maxGuesses = 9; // resets guess counter
-};
+// function GameReset () {
+//   chosenWord = wordPool[Math.floor(Math.random() * wordPool.length)]; // chooses new word
+//   var remainingLetters; // new empty var to store data to help solve
+//   maxGuesses = 9; // resets guess counter
+// };
 
 // DESCREPENCIES REMAINING
 // 1. Game set to three wrong guesses in a row, becuase once player guesses a letter correctly, the counter stops working. 
 // 2. can't seem to set up a solid reset function.
-
 
 
  
