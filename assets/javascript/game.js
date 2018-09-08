@@ -32,7 +32,7 @@ var guessLeft = document.getElementById("remaining");
 
 // Variables that hold of wins loses, and whats being guessed
 var winCount = 0;
-var maxGuesses = 3;
+var maxGuesses = 10;
 var GuessRight = false;
 console.log(GuessRight)
 
@@ -93,6 +93,8 @@ console.log('count ' + count);
     console.log(answer); 
     console.log('remaining ' + remainingLetters);
     console.log(maxGuesses);
+    GuessRight = false;
+    maxGuesses++;
   } 
   
   if (GuessRight === false) {
